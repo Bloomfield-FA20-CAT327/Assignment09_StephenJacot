@@ -16,38 +16,24 @@ public class UIScriptPurplePill : MonoBehaviour
 
     float duration = .5f;
 
-    void Start()
+    void OnTriggerEnter(Collider other)
     {
-        uiText = GameObject.Find("ColorCountText").GetComponent<Text>();
-    }
+        LightController.LightChanger();
 
-    // Update is called once per frame
-    void Update()
-    {
-        string textInfo = "";
+        float t = Mathf.PingPong(Time.time, duration) / duration;
 
-        textInfo += "Amount of Purple Pills Eaten " + purplePill + "\n";
-
-        uiText.text = textInfo;
-        if(Input.GetKeyDown(KeyCode.F))
+        foreach (Light light in LightController.lights)
         {
-            LightController.LightChanger();
-
-            float t = Mathf.PingPong(Time.time, duration) / duration;
-
-            foreach(Light light in LightController.lights)
-            {
-                light.color = Color.Lerp(colorRed, colorGreen, t);
-                //Detects if changing.
-
-                if(light.color == Color.Lerp(colorRed,colorGreen,t))
-                {
-                    purplePill += 1;
-                }
-
-            }
+            light.color = Color.Lerp(colorRed, colorGreen, t);
         }
 
+        if (other.gameObject.tag == "Player")
+        {
 
+            GameControllerScript gc = GameObject.FindGameObjectWithTag("Player").GetComponent<GameControllerScript>();
+            GameControllerScript.BluePillAdd();
+            Destroy(gameObject);
+
+        }
     }
 }

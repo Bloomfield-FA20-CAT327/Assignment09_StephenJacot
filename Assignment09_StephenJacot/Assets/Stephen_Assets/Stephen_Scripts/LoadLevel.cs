@@ -37,7 +37,8 @@ public class LoadLevel : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameControllerScript gc = GameObject.FindGameObjectWithTag("Player").GetComponent<GameControllerScript>();
+        GameControllerScript.UpLevel();
        
     }
 }
